@@ -1,0 +1,75 @@
+.filterButton {
+    color: inherit;
+	margin: 0 auto;
+	padding: 3px 7px;
+	text-decoration: none;
+	border: 1px solid transparent;
+	border-radius: 3px;
+}
+
+.filterButton:hover {
+    border-color: rgba(175, 47, 47, 0.1);
+    cursor: pointer;
+}
+
+.newer-todo {
+	position: relative;
+	margin: 0;
+	width: 100%;
+	font-size: 24px;
+	font-family: inherit;
+	font-weight: inherit;
+	line-height: 1.4em;
+	color: inherit;
+	padding: 6px;
+	border: 1px solid #999;
+	box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
+	box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.newer-todo {
+	padding: 16px 16px 16px 60px;
+	height: 65px;
+	border: none;
+	background: rgba(0, 0, 0, 0.003);
+	box-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);
+}
+
+.newer-todo:before {
+	content: '❯';
+	display: inline-block;
+	font-size: 22px;
+	color: #949494;
+	padding: 10px 27px 10px 27px;
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+
+.newer-todo:before {
+	color: #484848;
+}
+
+#rows {
+	display: flex;
+	
+}
+
+#row {
+	flex: 1;
+	padding: 0;
+}
+
+#row:hover {
+	cursor: pointer;
+
+}
+
+#row2 {
+	flex: 6;
+}
+
+  
+
+
