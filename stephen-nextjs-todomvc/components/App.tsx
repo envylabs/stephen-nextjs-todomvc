@@ -7,7 +7,7 @@ import Filter from "./Filter";
 import "todomvc-common/base.css";
 import "todomvc-app-css/index.css";
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
+import { getAnalytics } from "firebase/analytics";
 
 /**
  * Todo
@@ -16,6 +16,13 @@ import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
  * [X] Bug: You can currently add an "empty" todo
  * [X] Bug: You can currently edit an item to have an "empty" title, this is supposed to delete an item per the app spec.
  * [X] : add eslint and prettier
+ * [] : Get firebase database receiving data
+ * [] :  firebase console, you can restrict which domains can use that key though,  otherwise anyone can use that key and eat up your quota
+ * [] : Have nextjs sending todo data to the db- get uuid package installed, maybe next already has this
+ * [] : use firebase authentication and login users with id/google login, e.g. on creategroupsurvey.js line 158 and down
+ * [] : use next built in router for nav between login and todo page
+ * [] : add authentication with firebase, go to web console enable there, use google login,
+ * [] : manage state of login with Zustand, so that it is global level.
  */
 
 export type Todo = {
@@ -33,21 +40,18 @@ export default function App(): JSX.Element {
   let filteredTodoList;
 
   // Add firebase initialization:
-  // TODO: Replace the following with your app's Firebase project configuration
   const firebaseConfig = {
-    //...
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
   };
 
   const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  // Get a list of cities from your database
-  async function getCities(db: any) {
-    const citiesCol = collection(db, "cities");
-    const citySnapshot = await getDocs(citiesCol);
-    const cityList = citySnapshot.docs.map((doc) => doc.data());
-    return cityList;
-  }
+  const analytics = getAnalytics(app);
 
   switch (selectedFilter) {
     case "all":
@@ -63,6 +67,8 @@ export default function App(): JSX.Element {
       throw new Error(`Unexpected filter selected: ${selectedFilter}`);
   }
 
+  // replacing the states with push and pull the todos to firebase
+  // example is ligonier selfSurvey, dataexplorer.js line 297
   const addTodo = (text: string) => {
     if (text) {
       setTodo([
