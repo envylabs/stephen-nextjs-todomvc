@@ -8,6 +8,9 @@ import "todomvc-common/base.css";
 import "todomvc-app-css/index.css";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import firebase from "firebase/compat/app";
+import "firebase/compat/database";
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * Todo
@@ -81,6 +84,20 @@ export default function App(): JSX.Element {
     }
   };
 
+  const addTodoToFirebase = (text: string) => {
+    if (text) {
+      const id = uuidv4();
+
+      let usersRef = firebase.database().ref("notes/");
+      usersRef.set({
+        note: {
+          title: text,
+          isCompleted: false,
+        },
+      });
+    }
+  };
+
   const clearCompleted = () => {
     setTodo(
       todo.filter((item) => {
@@ -132,7 +149,11 @@ export default function App(): JSX.Element {
   return (
     <>
       <div className="todoapp">
-        <Header addTodo={addTodo} todoLen={todo.length} toggleAll={toggleAll} />
+        <Header
+          addTodo={addTodoToFirebase}
+          todoLen={todo.length}
+          toggleAll={toggleAll}
+        />
         <div>
           <ul className="todo-list">
             {filteredTodoList.map((item, index) => {
